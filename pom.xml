@@ -48,6 +48,13 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- BCRYPT -->
+		<dependency>
+			<groupId>at.favre.lib</groupId>
+			<artifactId>bcrypt</artifactId>
+			<version>0.10.2</version>
+		</dependency>
+
 		<!-- MySQL Driver -->
 		<dependency>
 			<groupId>com.mysql</groupId>
