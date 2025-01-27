@@ -2,29 +2,48 @@ package integrationTest;
 
 import dao.UserDao;
 import entities.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import services.UserService;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 class RegisterTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserDao userDao;
+    @Mock
+    private UserService userService;
+
+    @InjectMocks
+    private MyController myController;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(myController).build();
+    }
 
     @Test
-    void testGetUserById() throws Exception {
-        // Подготовка данных в базе
-        User user = new User();
-        user.setName("John Doe");
-        user = userRepository.save(user);
+    void testGetEndpoint() throws Exception {
+        // Mock service behavior
+        when(myService.getData()).thenReturn("Hello, World!");
 
-        // Вызов API и проверка ответа
-        mockMvc.perform(get("/users/" + user.getId()))
+        // Perform GET request
+        mockMvc.perform(get("/my-endpoint")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("John Doe"));
+                .andExpect(content().string("Hello, World!"));
     }
+
 }

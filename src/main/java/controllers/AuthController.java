@@ -20,4 +20,9 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         return authService.authUser(username, password, response);
     }
+
+    @PostMapping("/signin")
+    public ResponseEntity<String> signin(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
+        return authService.registerUser(username, password, response);
+    }
 }
